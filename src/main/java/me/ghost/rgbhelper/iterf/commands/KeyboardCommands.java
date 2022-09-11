@@ -31,8 +31,8 @@ public class KeyboardCommands {
     }
 
     public static String flash(String color, int times, String side, int delay) {
-        if (delay == -1) return "keyboard scroll " + color + " " + times + " " + side;
-        return "keyboard scroll " + color + " " + times + " " + side + " delay " + delay;
+        if (delay == -1) return "keyboard flash " + color + " " + times + " " + side;
+        return "keyboard flash " + color + " " + times + " " + side + " delay " + delay;
     }
 
     public static String topbar(String color) {

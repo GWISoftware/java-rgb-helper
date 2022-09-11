@@ -2,6 +2,7 @@ package me.ghost.rgbhelper.iterf;
 
 import me.ghost.rgbhelper.RGBHelper;
 import me.ghost.rgbhelper.util.FileUtils;
+import me.ghost.rgbhelper.util.Utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors;
 
 public class RGBInterface {
 
-    private final File HOME_DIR = new File(FileUtils.getWorkDir(), "java-rgb");
+    //private final File HOME_DIR = Utils.HOME_DIR;
     private final ExecutorService THREAD = Executors.newCachedThreadPool();
 
     private Process process = null;
@@ -33,8 +34,8 @@ public class RGBInterface {
             this.created = true;
         }
 
-        File rgbHelper = new File(HOME_DIR, "rgbhelper.exe");
-        File rgbDll = new File(HOME_DIR, "Colore.dll");
+        File rgbHelper = new File(Utils.HOME_DIR, "rgbhelper.exe");
+        File rgbDll = new File(Utils.HOME_DIR, "Colore.dll");
 
         if (!rgbHelper.exists()) {
             RGBHelper.log("Cannot start interface, rgbhelper.exe missing from current path.");
@@ -69,13 +70,19 @@ public class RGBInterface {
         }
     }
 
+    public boolean isOk() {
+        return this.ok;
+    }
 
     public void sendMacro(ArrayList<String> commands) {
         StringBuilder command = new StringBuilder("macro ");
         for (String cmd : commands) command.append(cmd).append(",");
+        command.deleteCharAt(command.length() - 1);
         command.append("\n");
+        RGBHelper.log("sendMacro | " + command);
         try {
             if (!this.process.isAlive()) {
+                RGBHelper.log("Interface unlinked (rgbhelper crashed?)");
                 this.ok = false;
                 return;
             }

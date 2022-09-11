@@ -1,7 +1,5 @@
 package me.ghost.rgbhelper.iterf;
 
-import me.ghost.rgbhelper.RGBHelper;
-
 import java.util.ArrayList;
 
 public class MacroBuilder {
@@ -13,12 +11,12 @@ public class MacroBuilder {
 
     }
 
-    public void addCommand(String command) {
+    public void add(String command) {
         this.macro.add(command);
     }
 
-    public void run() {
-        RGBHelper.RGB_INTERFACE.sendMacro(this.macro);
+    public ArrayList<String> get() {
+        return this.macro;
     }
 
 }
