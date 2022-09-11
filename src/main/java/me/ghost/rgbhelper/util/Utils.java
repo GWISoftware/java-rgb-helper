@@ -7,8 +7,8 @@ import java.io.File;
 public class Utils {
 
     public static final File HOME_DIR = new File(FileUtils.getWorkDir(), "java-rgb");
-    public static final String COLORE = "https://github.com/StonedGiraffe/rgb-helper/releases/download/0.1/Colore.dll";
-    public static final String RGB_HELPER = "https://github.com/StonedGiraffe/rgb-helper/releases/download/0.1/rgbhelper.exe";
+    public static final String COLORE = "https://github.com/StonedGiraffe/meteor-synapse-integration/blob/main/lib/Colore.dll";
+    public static final String RGB_HELPER = "https://github.com/StonedGiraffe/meteor-synapse-integration/blob/main/lib/rgbhelper.exe";
 
 
     public static boolean checkHelpers() {
