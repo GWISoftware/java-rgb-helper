@@ -8,12 +8,12 @@ import java.util.logging.Logger;
 
 public class RGBHelper {
 
-    public static final Logger LOG = Logger.getLogger("java-rgb");
+    //public static final Logger LOG = Logger.getLogger("java-rgb");
     //public static final RGBInterface RGB_INTERFACE = new RGBInterface();
 
 
     public static void log(String info) {
-        LOG.info(info);
+        System.out.println("[RGBHelper] " + info);
     }
 
 

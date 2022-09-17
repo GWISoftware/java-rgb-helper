@@ -2,7 +2,6 @@ package me.ghost.rgbhelper.iterf;
 
 import me.ghost.rgbhelper.RGBHelper;
 import me.ghost.rgbhelper.util.FileUtils;
-import me.ghost.rgbhelper.util.Utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +13,8 @@ import java.util.concurrent.Executors;
 
 public class RGBInterface {
 
-    //private final File HOME_DIR = Utils.HOME_DIR;
+
+    private File HOME_DIR = new File(FileUtils.getWorkDir(), "java-rgb");
     private final ExecutorService THREAD = Executors.newCachedThreadPool();
 
     private Process process = null;
@@ -26,29 +26,32 @@ public class RGBInterface {
         this.create();
     }
 
+    public RGBInterface(File dir) {
+        this.HOME_DIR = new File(dir, "java-rgb");
+        this.create();
+    }
+
+
+    private boolean prepare() {
+        if (!this.HOME_DIR.exists()) this.HOME_DIR.mkdirs();
+        return this.checkColore() && this.checkHelper();
+    }
+
 
     private void create() {
+
+        if (!this.created && !this.prepare()) {
+            RGBHelper.log("Couldn't start interface (check logs)");
+            return;
+        }
+
         if (this.created) {
             RGBHelper.log("RBGHelper crashed, attempting to restart.");
         } else {
             this.created = true;
         }
 
-        File rgbHelper = new File(Utils.HOME_DIR, "rgbhelper.exe");
-        File rgbDll = new File(Utils.HOME_DIR, "Colore.dll");
-
-        if (!rgbHelper.exists()) {
-            RGBHelper.log("Cannot start interface, rgbhelper.exe missing from current path.");
-            this.ok = false;
-            return;
-        }
-
-        if (!rgbDll.exists()) {
-            RGBHelper.log("Cannot start interface, Colore.dll missing from current path.");
-            this.ok = false;
-            return;
-        }
-
+        File rgbHelper = new File(this.HOME_DIR, "rgbhelper.exe");
         ProcessBuilder builder = new ProcessBuilder(rgbHelper.getAbsolutePath());
         try {
             RGBHelper.log("Waiting for rgbhelper.exe");
@@ -65,6 +68,7 @@ public class RGBInterface {
             RGBHelper.log("Connected to rgbhelper!");
             this.ok = true;
         } catch (IOException e) {
+            e.printStackTrace();
             RGBHelper.log("Cannot start interface, error while starting rgbhelper.exe");
             this.ok = false;
         }
@@ -109,5 +113,18 @@ public class RGBInterface {
         }
     }
 
+
+
+    public boolean checkColore() {
+        File colore = new File(this.HOME_DIR, "Colore.dll");
+        if (colore.exists()) return true;
+        return FileUtils.copyResource("Colore.dll", colore);
+    }
+
+    public boolean checkHelper() {
+        File rgbhelper = new File(this.HOME_DIR, "rgbhelper.exe");
+        if (rgbhelper.exists()) return true;
+        return FileUtils.copyResource("rgbhelper.exe", rgbhelper);
+    }
 
 }

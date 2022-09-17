@@ -3,7 +3,6 @@ package me.ghost.rgbhelper;
 import me.ghost.rgbhelper.iterf.MacroBuilder;
 import me.ghost.rgbhelper.iterf.RGBInterface;
 import me.ghost.rgbhelper.iterf.commands.*;
-import me.ghost.rgbhelper.util.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,12 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         thread.execute(() -> {
-            RGBHelper.log("Running default tests...");
-            if (!Utils.checkHelpers()) {
-                RGBHelper.log("One or more helper files are missing.");
-                System.exit(0);
-            }
-            RGBHelper.log("Helper files OK! Starting interface");
+            RGBHelper.log("Waiting for interface...");
+            //RGBHelper.log("Helper files OK! Starting interface");
             RGBInterface rgbInterface = new RGBInterface();
             while (!rgbInterface.isOk()) {
                 try {

@@ -1,5 +1,6 @@
 package me.ghost.rgbhelper.util;
 
+import me.ghost.rgbhelper.Main;
 import me.ghost.rgbhelper.RGBHelper;
 
 import java.io.File;
@@ -29,6 +30,27 @@ public class FileUtils {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static InputStream getResource(String filename) {
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+        //return this.getClass().getClassLoader().getResourceAsStream("me/ghost/rgbhelper/" + filename);
+    }
+
+
+    public static boolean copyResource(String name, File out) {
+        InputStream is = getResource(name);
+        if (is == null) {
+            RGBHelper.log("copyResource with " + name + " failed!");
+            return false;
+        }
+        try {
+            Files.copy(is, out.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static boolean download(String url, File output) {
